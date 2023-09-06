@@ -1,0 +1,17 @@
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.AssemblyInfoInputs.cache
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.AssemblyInfo.cs
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.csproj.CoreCompileInputs.cache
+C:\Projects\Walley\Walley\bin\Debug\net6.0\Walley.exe
+C:\Projects\Walley\Walley\bin\Debug\net6.0\Walley.deps.json
+C:\Projects\Walley\Walley\bin\Debug\net6.0\Walley.runtimeconfig.json
+C:\Projects\Walley\Walley\bin\Debug\net6.0\Walley.dll
+C:\Projects\Walley\Walley\bin\Debug\net6.0\Walley.pdb
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.dll
+C:\Projects\Walley\Walley\obj\Debug\net6.0\refint\Walley.dll
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.pdb
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.genruntimeconfig.cache
+C:\Projects\Walley\Walley\obj\Debug\net6.0\ref\Walley.dll
+C:\Projects\Walley\Walley\bin\Debug\net6.0\Holidays.dll
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.csproj.AssemblyReference.cache
+C:\Projects\Walley\Walley\obj\Debug\net6.0\Walley.csproj.CopyComplete

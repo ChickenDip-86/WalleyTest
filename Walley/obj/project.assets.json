@@ -1,0 +1,104 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "NordicHolidays.NET/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Holidays.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Holidays.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NordicHolidays.NET/1.0.0": {
+      "sha512": "rNkj3gFX4bdhwB6+XBDxIHq2SsbwVg6F/BM27S5M0WNKSvDKorhpB64AEts0kojYJhyhJKRcQyH3t/cqhuGX6g==",
+      "type": "package",
+      "path": "nordicholidays.net/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Holidays.dll",
+        "lib/netstandard2.0/Holidays.xml",
+        "nordicholidays.net.1.0.0.nupkg.sha512",
+        "nordicholidays.net.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "NordicHolidays.NET >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Eric\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Projects\\Walley\\walley\\Walley.csproj",
+      "projectName": "Walley",
+      "projectPath": "C:\\Projects\\Walley\\walley\\Walley.csproj",
+      "packagesPath": "C:\\Users\\Eric\\.nuget\\packages\\",
+      "outputPath": "C:\\Projects\\Walley\\walley\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Eric\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "NordicHolidays.NET": {
+            "target": "Package",
+            "version": "[1.0.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

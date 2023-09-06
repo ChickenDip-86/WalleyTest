@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Et3wCZ5nPAi9Hf816WoTwp3jSb/fnbaxJ4bNVzziq+UW/GgduNdbNKaDHa3XYaqjZHt7ryx7dzxyxvFu6RcR0Q==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\Walley\\Walley\\Walley.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Eric\\.nuget\\packages\\nordicholidays.net\\1.0.0\\nordicholidays.net.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
