@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TollFeeCalculator;
 
-namespace Walley.src
+public class Military : IVehicle
 {
-    public class Military : IVehicle
-    {
-        public string GetVehicleType()
-        {
-            return "Military";
-        }
-    }
+    public bool IsTollFree { get; } = true;
+    public string GetVehicleType() => "Military";
 }

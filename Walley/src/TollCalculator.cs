@@ -1,148 +1,132 @@
 ﻿using System;
 using System.Globalization;
-using TollFeeCalculator;
 using Holidays;
 
-public class TollCalculator
+namespace WalleyAssignment
 {
-    // Toll rates
-    private int tollNoneSEK = 0;
-    private int tollLowSEK = 8;
-    private int tollMediumSEK = 13;
-    private int tollHighSEK = 18;
-
-    // Toll rate and Time MAX 
-    private int tollMaxAmountSEK = 60;
-    private int tollIntervalMinutes = 60;
-
-
-
-    public int GetTollFee(IVehicle vehicle, DateTime[] dates)
+    public class TollCalculator
     {
-        int totalFee = 0;
-        int intervalFee = 0;
-        DateTime? new60MinuteInterval = null;
+        // Toll rates
+        private int tollNoneSEK = 0;
+        private int tollLowSEK = 8;
+        private int tollMediumSEK = 13;
+        private int tollHighSEK = 18;
 
-        foreach (DateTime date in dates)
+        // Toll rate and Time MAX 
+        private int tollMaxAmountSEK = 60;
+        private int tollIntervalMinutes = 60;
+
+        public int GetTotalTollFeeForDay(IVehicle vehicle, DateTime[] allTimesOfDay)
         {
-            int nextFee = GetTollFee(date, vehicle);
-            intervalFee = Math.Max(intervalFee, nextFee);
+            int totalFee = 0;
+            int intervalFee = 0;
+            DateTime? newIntervalStart = null;
 
-            if (new60MinuteInterval == null || (date - new60MinuteInterval).Value.TotalMinutes > tollIntervalMinutes)
+            if (vehicle == null || allTimesOfDay == null || allTimesOfDay.Length == 0)
             {
-                if (new60MinuteInterval != null)
-                {
-                    totalFee += intervalFee;
-                }
-
-                new60MinuteInterval = date;
-                intervalFee = 0;
+                throw new ArgumentException("Invalid input. Please provide a valid vehicle and at least one date.");
             }
+
+            DateTime previousTimeOfDay = allTimesOfDay.FirstOrDefault();
+            foreach (DateTime timeOfDay in allTimesOfDay.Skip(1))
+            {
+                if (timeOfDay <= previousTimeOfDay)
+                {
+                    throw new ArgumentException("Invalid input. Dates should be in ascending order.");
+                }
+                previousTimeOfDay = timeOfDay;
+            }
+
+            foreach (DateTime timeOfDay in allTimesOfDay)
+            {
+                int tollFee = GetTollFeeForSpecificTime(timeOfDay, vehicle);
+
+                if (newIntervalStart == null)
+                {
+                    newIntervalStart = timeOfDay;
+                    intervalFee = tollFee;
+                }
+                else
+                {
+                    TimeSpan intervalDuration = timeOfDay - newIntervalStart.Value;
+                    if (intervalDuration.TotalMinutes <= tollIntervalMinutes)
+                    {
+                        intervalFee = Math.Max(intervalFee, tollFee);
+                    }
+                    else
+                    {
+                        totalFee += intervalFee;
+                        newIntervalStart = timeOfDay;
+                        intervalFee = tollFee;
+                    }
+                }
+            }
+
+            if (newIntervalStart != null)
+            {
+                totalFee += intervalFee;
+            }
+
+            if (totalFee > tollMaxAmountSEK)
+            {
+                totalFee = tollMaxAmountSEK;
+            }
+
+            return totalFee;
         }
 
-        if (new60MinuteInterval != null)
+        public int GetTollFeeForSpecificTime(DateTime date, IVehicle vehicle)
         {
-            totalFee += intervalFee;
+            if (vehicle == null) throw new ArgumentNullException(nameof(vehicle), "Vehicle cannot be null.");
+            
+            int hour = date.Hour;
+            int minute = date.Minute;
+            
+            if (vehicle.IsTollFree || IsTollFreeDate(date)) return 0;
+
+            if (hour == 6 && minute >= 0 && minute <= 29) return tollLowSEK;
+            else if (hour == 6 && minute >= 30 && minute <= 59) return tollMediumSEK;
+            else if (hour == 7 && minute >= 0 && minute <= 59) return tollHighSEK;
+            else if (hour == 8 && minute >= 0 && minute <= 29) return tollMediumSEK;
+            else if ((hour == 8 && minute >= 30) || (hour >= 9 && hour <= 14)) return tollLowSEK;
+            else if (hour == 15 && minute >= 0 && minute <= 29) return tollMediumSEK;
+            else if ((hour == 15 && minute >= 30) || (hour == 16 && minute <= 59)) return tollHighSEK;
+            else if (hour == 17 && minute >= 0 && minute <= 59) return tollMediumSEK;
+            else if (hour == 18 && minute >= 0 && minute <= 29) return tollLowSEK;
+            else return tollNoneSEK;
         }
 
-        if (totalFee > tollMaxAmountSEK)
+        public bool IsTollFreeDate(DateTime date)
         {
-            totalFee = tollMaxAmountSEK;
-        }
+            List<ReturnDates.Holiday> holidays = Holidays.ReturnDates.getAllHolidays(date.Year, ReturnDates.Country.Sweden, false, true);
+            List<DateTime> daysBeforeHolidays = new List<DateTime>();
+            DateTime december31st = new DateTime(date.Year, 12, 31);
 
-        return totalFee;
-    }
+            foreach (var holiday in holidays)
+            {
+                DateTime dayBefore = holiday.date.AddDays(-1);
+                daysBeforeHolidays.Add(dayBefore);
+            }
 
-
-
-    public int GetTollFee(DateTime date, IVehicle vehicle)
-    {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
-
-        int hour = date.Hour;
-        int minute = date.Minute;
-
-        if (hour == 6 && minute >= 0 && minute <= 29) return tollLowSEK;
-        else if (hour == 6 && minute >= 30 && minute <= 59) return tollMediumSEK;
-        else if (hour == 7 && minute >= 0 && minute <= 59) return tollHighSEK;
-        else if (hour == 8 && minute >= 0 && minute <= 29) return tollMediumSEK;
-        else if ((hour == 8 && minute >= 30) || (hour >= 9 && hour <= 14)) return tollLowSEK;
-        else if (hour == 15 && minute >= 0 && minute <= 29) return tollMediumSEK;
-        else if ((hour == 15 && minute >= 30) || (hour == 16 && minute <= 59)) return tollHighSEK;
-        else if (hour == 17 && minute >= 0 && minute <= 59) return tollMediumSEK;
-        else if (hour == 18 && minute >= 0 && minute <= 29) return tollLowSEK;
-        else return tollNoneSEK;
-    }
-
-
-    private bool IsTollFreeVehicle(IVehicle vehicle)
-    {
-        if (vehicle == null)
-        {
-            return false;
-        }
-
-        String vehicleType = vehicle.GetVehicleType();
-        
-        return vehicleType.Equals(TollFreeVehicles.Motorbike.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Tractor.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Emergency.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Diplomat.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Foreign.ToString()) ||
-               vehicleType.Equals(TollFreeVehicles.Military.ToString());
-    }
-
-
-    private enum TollFreeVehicles
-    {
-        Motorbike,
-        Tractor,
-        Emergency,
-        Diplomat,
-        Foreign,
-        Military
-    }
-
-
-
-    public Boolean IsTollFreeDate(DateTime date)
-    {
-        List<ReturnDates.Holiday> holidays = Holidays.ReturnDates.getAllHolidays(date.Year, ReturnDates.Country.Sweden, false, true);
-        List<DateTime> daysBeforeHolidays = new List<DateTime>();
-        DateTime december31st = new DateTime(date.Year, 12, 31);
-
-        foreach (var holiday in holidays)
-        {
-            DateTime dayBefore = holiday.date.AddDays(-1);
-            daysBeforeHolidays.Add(dayBefore);
-        }
-
-        if (date.Month == 7      || 
-            date == december31st ||
-            Holidays.ReturnDates.isHoliday(date, ReturnDates.Country.Sweden, true, true))
-        {
-            return true;
-        }
-
-        foreach (var dayBeforeHoliday in daysBeforeHolidays)
-        {
-            if (date == dayBeforeHoliday)
+            if (date.Month == 7 ||
+                date == december31st ||
+                Holidays.ReturnDates.isHoliday(date, ReturnDates.Country.Sweden, true, true))
             {
                 return true;
             }
+
+            foreach (var dayBeforeHoliday in daysBeforeHolidays)
+            {
+                if (date == dayBeforeHoliday)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        return false;
     }
-
-
-  
-
-
-
-
-
-
 
 
 

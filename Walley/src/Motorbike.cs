@@ -4,13 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TollFeeCalculator
+public class Motorbike : IVehicle
 {
-    public class Motorbike : IVehicle
-    {
-        public string GetVehicleType()
-        {
-            return "Motorbike";
-        }
-    }
+    public bool IsTollFree { get; } = true;
+    public string GetVehicleType() => "Motorbike";
 }
